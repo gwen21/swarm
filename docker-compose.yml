@@ -1,15 +1,18 @@
-version: '2.2'
+version: '3'
 services:
 
   consul:
-    build:
-      context: consul
+    image: consul:0.9.3
 
   minio:
-    build:
-      context: minio
+    image: minio/minio
     ports:
       - 9000:9000
+    deploy:
+      mode: replicated
+      replicas: 3
+      placement:
+        constraints: [node.role == worker]
     volumes:
       - /home/data:/data
     environment:
@@ -17,9 +20,9 @@ services:
       - MINIO_SECRET_KEY=hackathon2017 # minio password
       - MINIO_REGION=us-east-1 # region for storage buckets (see amazon S3 specs)
       - MINIO_BROWSER=on # activate minio http browser
+    command: ["minio","server","/data"] 
 
   swarm_visualizer:
-    build:
-      context: swarm_visualizer
+    image: dockersamples/visualizer
     ports:
       - 8080:8080
