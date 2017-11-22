@@ -1,4 +1,4 @@
-version: '3'
+version: '3.2'
 services:
 
   consul:
@@ -20,9 +20,16 @@ services:
       - MINIO_SECRET_KEY=hackathon2017 # minio password
       - MINIO_REGION=us-east-1 # region for storage buckets (see amazon S3 specs)
       - MINIO_BROWSER=on # activate minio http browser
-    command: ["minio","server","/data"] 
+    command: ["minio", "server", "/data"] 
 
   swarm_visualizer:
     image: dockersamples/visualizer
     ports:
       - 8080:8080
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
