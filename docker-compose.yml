@@ -1,0 +1,25 @@
+version: '2.2'
+services:
+
+  consul:
+    build:
+      context: consul
+
+  minio:
+    build:
+      context: minio
+    ports:
+      - 9000:9000
+    volumes:
+      - /home/data:/data
+    environment:
+      - MINIO_ACCESS_KEY=hackathon # minio user
+      - MINIO_SECRET_KEY=hackathon2017 # minio password
+      - MINIO_REGION=us-east-1 # region for storage buckets (see amazon S3 specs)
+      - MINIO_BROWSER=on # activate minio http browser
+
+  swarm_visualizer:
+    build:
+      context: swarm_visualizer
+    ports:
+      - 8080:8080
