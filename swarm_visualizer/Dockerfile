@@ -1,1 +1,1 @@
-FROM dockersamples/docker-swarm-visualizer
+FROM dockersamples/visualizer

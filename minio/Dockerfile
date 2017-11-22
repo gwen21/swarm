@@ -1,3 +1,3 @@
 FROM minio/minio 
 
-CMD minio/minio server /data 
+CMD ["minio","server","/data"] 
